@@ -14,16 +14,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Controller
 public class MedicationInfoController {
     private final MedicationInfoService medicationInfoService;
 
     /* 의약품 목록보기 */
-    @GetMapping("information/medication")
-    public String medicationSearch(Model model,
+    @GetMapping("info/medication")
+    public String medicationInfoAll(Model model,
                                    @PageableDefault(sort = "id", size = 20, direction = Sort.Direction.ASC) Pageable pageable,
                                    @RequestParam(name="searchFilter", defaultValue = "") String searchFilter,
                                    @RequestParam(name="searchValue", defaultValue = "") String searchValue) {
@@ -48,13 +46,16 @@ public class MedicationInfoController {
         model.addAttribute("searchValue", searchValue);
         model.addAttribute("searchFilter", searchFilter);
         /* 페이지네이션 속성 추가 */
+        model.addAttribute("totalPages", responseDtoList.getTotalPages());           // 전체 페이지
+        model.addAttribute("pageNumber", responseDtoList.getNumber());               // 현재 페이지 번호
+        model.addAttribute("maxPage", 10);                               // 최대 페이지 개수
 
-        return "medication_info_search";
+        return "medication_info_all";
     }
 
     /* 의약품 상세 보기 */
-    @GetMapping("information/medication/{id}")
-    public String medicationDetail(@PathVariable Long id, Model model) {
+    @GetMapping("info/medication/{id}")
+    public String medicationInfoDetail(@PathVariable Long id, Model model) {
         MedicationInfoResponseDto responseDto = this.medicationInfoService.findById(id);
         /* 의약품 상세 정보 추가 */
         model.addAttribute("medicationInfo", responseDto);
