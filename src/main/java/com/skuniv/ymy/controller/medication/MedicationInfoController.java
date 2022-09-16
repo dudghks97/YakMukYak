@@ -1,7 +1,7 @@
-package com.skuniv.ymy.controller;
+package com.skuniv.ymy.controller.medication;
 
-import com.skuniv.ymy.dto.MedicationInfoListResponseDto;
-import com.skuniv.ymy.dto.MedicationInfoResponseDto;
+import com.skuniv.ymy.dtos.medication.MedicationInfoListResponseDto;
+import com.skuniv.ymy.dtos.medication.MedicationInfoResponseDto;
 import com.skuniv.ymy.service.MedicationInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,10 +29,10 @@ public class MedicationInfoController {
         if (searchValue != null) {
             switch (searchFilter) {
                 case "itemName":
-                    responseDtoList = this.medicationInfoService.findAllByItemName(searchValue, pageable);
+                    responseDtoList = this.medicationInfoService.findAllByItemNameContains(searchValue, pageable);
                     break;
                 case "enterpriseName":
-                    responseDtoList = this.medicationInfoService.findAllByEnterPriseName(searchValue, pageable);
+                    responseDtoList = this.medicationInfoService.findAllByEnterPriseNameContains(searchValue, pageable);
                     break;
                 default:
                     responseDtoList = this.medicationInfoService.findAll(pageable);
@@ -48,7 +48,7 @@ public class MedicationInfoController {
         /* 페이지네이션 속성 추가 */
         model.addAttribute("totalPages", responseDtoList.getTotalPages());           // 전체 페이지
         model.addAttribute("pageNumber", responseDtoList.getNumber());               // 현재 페이지 번호
-        model.addAttribute("maxPage", 10);                               // 최대 페이지 개수
+        model.addAttribute("maxPage", 5);                               // 최대 페이지 개수
 
         return "medication_info_all";
     }

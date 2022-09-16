@@ -11,8 +11,8 @@ public interface MedicationInfoRepository extends JpaRepository<MedicationInfo, 
     Page<MedicationInfo> findAll(Pageable pageable);
 
     /* 업체명으로 검색 */
-    Page<MedicationInfo> findAllByEnterpriseName(String enterpriseName, Pageable pageable);
+    Page<MedicationInfo> findAllByEnterpriseNameContains(String enterpriseName, Pageable pageable);
 
     /* 제품명으로 검색 */
-    Page<MedicationInfo> findAllByItemName(String itemName, Pageable pageable);
+    Page<MedicationInfo> findAllByItemNameContains(String itemName, Pageable pageable);
 }

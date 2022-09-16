@@ -1,9 +1,9 @@
 package com.skuniv.ymy.service;
 
 import com.skuniv.ymy.domain.MedicationInfo;
-import com.skuniv.ymy.dto.MedicationInfoListResponseDto;
-import com.skuniv.ymy.dto.MedicationInfoRequestDto;
-import com.skuniv.ymy.dto.MedicationInfoResponseDto;
+import com.skuniv.ymy.dtos.medication.MedicationInfoListResponseDto;
+import com.skuniv.ymy.dtos.medication.MedicationInfoSaveRequestDto;
+import com.skuniv.ymy.dtos.medication.MedicationInfoResponseDto;
 import com.skuniv.ymy.repository.MedicationInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,15 +25,15 @@ public class MedicationInfoService {
 
     /* 제품명별 검색 목록 보기 */
     @Transactional
-    public Page<MedicationInfoListResponseDto> findAllByItemName(String itemName, Pageable pageable) {
-        Page<MedicationInfo> medicationInfoList = this.medicationInfoRepository.findAllByItemName(itemName, pageable);
+    public Page<MedicationInfoListResponseDto> findAllByItemNameContains(String itemName, Pageable pageable) {
+        Page<MedicationInfo> medicationInfoList = this.medicationInfoRepository.findAllByItemNameContains(itemName, pageable);
         return medicationInfoList.map(MedicationInfoListResponseDto::new);
     }
 
     /* 업체명별 검색 목록 보기 */
     @Transactional
-    public Page<MedicationInfoListResponseDto> findAllByEnterPriseName(String enterpriseName, Pageable pageable) {
-        Page<MedicationInfo> medicationInfoList = this.medicationInfoRepository.findAllByEnterpriseName(enterpriseName, pageable);
+    public Page<MedicationInfoListResponseDto> findAllByEnterPriseNameContains(String enterpriseName, Pageable pageable) {
+        Page<MedicationInfo> medicationInfoList = this.medicationInfoRepository.findAllByEnterpriseNameContains(enterpriseName, pageable);
         return medicationInfoList.map(MedicationInfoListResponseDto::new);
     }
 
@@ -48,7 +48,7 @@ public class MedicationInfoService {
 
     /* 의약품 정보 저장 */
     @Transactional
-    public Long save(final MedicationInfoRequestDto requestDto) {
+    public Long save(final MedicationInfoSaveRequestDto requestDto) {
         return this.medicationInfoRepository.save(requestDto.toEntity()).getId();
     }
 }

@@ -1,9 +1,11 @@
-package com.skuniv.ymy.controller;
+package com.skuniv.ymy.controller.medication;
 
-import com.mysql.cj.xdevapi.JsonArray;
-import com.skuniv.ymy.dto.MedicationInfoRequestDto;
+import com.skuniv.ymy.dtos.medication.MedicationInfoSaveRequestDto;
 import com.skuniv.ymy.service.MedicationInfoService;
 import lombok.RequiredArgsConstructor;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,6 +17,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -36,7 +39,7 @@ public class MedicationInfoRestController {
                 urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=v3Z3f%2FSzidiBv4M4fvV3G1CdLwvpePyKorJv5GDRz4kFglFZEg00xQZrPZicEEusfOLI%2FLzszRM0LTU8vCfSeQ%3D%3D");
                 urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(String.valueOf(i), "UTF-8")); /*페이지번호*/
                 urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("100", "UTF-8")); /*한 페이지 결과 수*/
-                urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*응답데이터 형식(xml/json) Default:xml*/
+                urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*응답데이터 형식(xml/json) Default:xml*/
 
                 // API 연결
                 URL url = new URL(urlBuilder.toString());
@@ -78,7 +81,7 @@ public class MedicationInfoRestController {
                     String ingredientName = String.valueOf(object.get("INGR_NAME"));
 
                     // requestDto 생성
-                    MedicationInfoRequestDto requestDto = new MedicationInfoRequestDto(
+                    MedicationInfoSaveRequestDto requestDto = new MedicationInfoSaveRequestDto(
                             itemSeq, itemName, enterpriseName, permitDate, materialName,
                             efficacy, useMethod, precaution, storageMethod,  validTerm,
                             permitKindName, cancelName, cancelDate, changeDate, totalContent,
@@ -87,11 +90,12 @@ public class MedicationInfoRestController {
 
                     // DB insert
                     medicationInfoService.save(requestDto);
-                    jsonPrintString = "Insert Complete!";
+                    jsonPrintString = "Insertion Successfully Completed!";
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
+                jsonPrintString = String.valueOf(e);
             }
         }
         return jsonPrintString;
@@ -106,34 +110,31 @@ public class MedicationInfoRestController {
             StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1471000/DrugPrdtPrmsnInfoService02/getDrugPrdtPrmsnDtlInq01");
             urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=v3Z3f%2FSzidiBv4M4fvV3G1CdLwvpePyKorJv5GDRz4kFglFZEg00xQZrPZicEEusfOLI%2FLzszRM0LTU8vCfSeQ%3D%3D");
             urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
-            urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("30", "UTF-8")); /*한 페이지 결과 수*/
-            urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*응답데이터 형식(xml/json) Default:xml*/
+            urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*한 페이지 결과 수*/
+            urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8")); /*응답데이터 형식(xml/json) Default:xml*/
 
             // API 연결
             URL url = new URL(urlBuilder.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("Content-type", "application/json");
+            conn.setRequestProperty("Content-type", "application/xml");
+            conn.connect();
 
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-            result = bufferedReader.readLine();
+            // XML Parsing
+            SAXBuilder builder = new SAXBuilder();
+            Document document = builder.build(conn.getInputStream());
 
-            // JSON Parsing
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
+            Element root = document.getRootElement();
+            Element body = root.getChild("body");
+            Element items = body.getChild("items");
+            List<Element> item = items.getChildren("item");
 
-            // result 의 body
-            JSONObject body = (JSONObject) jsonObject.get("body");
-            // body 의 items
-            JSONArray items = (JSONArray) body.get("items");
-
-            for (int i = 0; i < items.size(); i++) {
-                JSONObject item = (JSONObject) items.get(i);
-                String itemName = String.valueOf(item.get("ITEM_NAME"));
-                jsonPrintString += itemName + " ";
+            for (int i = 0; i < item.size(); i++) {
+                Element element = item.get(i);
+//                jsonPrintString = element.getText();
+//                jsonPrintString += element.getChildText("PRDUCT");
             }
 
-            jsonPrintString = body.toString();
 
         } catch (Exception e) {
             e.printStackTrace();

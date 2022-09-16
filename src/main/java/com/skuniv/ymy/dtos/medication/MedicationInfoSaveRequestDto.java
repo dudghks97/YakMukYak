@@ -1,4 +1,4 @@
-package com.skuniv.ymy.dto;
+package com.skuniv.ymy.dtos.medication;
 
 import com.skuniv.ymy.domain.MedicationInfo;
 import lombok.Builder;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class MedicationInfoRequestDto {
+public class MedicationInfoSaveRequestDto {
     private String itemSeq;
     private String itemName;
     private String enterpriseName;
@@ -27,11 +27,11 @@ public class MedicationInfoRequestDto {
     private String ingredientName;
 
     @Builder
-    public MedicationInfoRequestDto(String itemSeq, String itemName, String enterpriseName, String permitDate,
-                          String materialName, String efficacy, String useMethod, String precaution,
-                          String storageMethod, String validTerm, String permitKindName, String cancelName,
-                          String cancelDate, String changeDate, String totalContent, String mainIngredient,
-                          String ingredientName) {
+    public MedicationInfoSaveRequestDto(String itemSeq, String itemName, String enterpriseName, String permitDate,
+                                        String materialName, String efficacy, String useMethod, String precaution,
+                                        String storageMethod, String validTerm, String permitKindName, String cancelName,
+                                        String cancelDate, String changeDate, String totalContent, String mainIngredient,
+                                        String ingredientName) {
         this.itemSeq = itemSeq;
         this.itemName = itemName;
         this.enterpriseName = enterpriseName;
