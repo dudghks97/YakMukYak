@@ -50,8 +50,8 @@
 
             <!-- Card Body -->
             <div class="card-body text-dark">
-              <div><a class="card-text text-dark" href="/info/medication"><b>의약품 정보조회</b></a></div>
-              <div><a class="card-text text-dark" href="/info/healthFood">건강기능식품 정보조회</a></div>
+              <div><a class="card-text text-dark" href="/info/medication">의약품 정보조회</a></div>
+              <div><a class="card-text text-dark" href="/info/healthFood"><b>건강기능식품 정보조회</b></a></div>
             </div>
           </div>
         </div>
@@ -64,7 +64,7 @@
       <div class="card border border-dark h-100">
         <!-- Card Header -->
         <div class="card-header bg-dark text-white">
-          <h5 class="m-0"><b>의약품 목록 조회</b></h5>
+          <h5 class="m-0"><b>건강기능식품 목록 조회</b></h5>
         </div>
 
         <!-- Card Body -->
@@ -76,23 +76,19 @@
                 <th style="width: 5%" class="text-center" >순번</th>
                 <th style="width: 25%" class="text-center" >제품명</th>
                 <th style="width: 10%" class="text-center" >업체명</th>
-                <th style="width: 5%" class="text-center" >허가일</th>
-                <th style="width: 5%" class="text-center" >취소일자</th>
-                <th style="width: 10%" class="text-center" >취소/취하</th>
-                <th style="width: 5%" class="text-center" >변경일자</th>
+                <th style="width: 5%" class="text-center" >등록일</th>
+                <th style="width: 5%" class="text-center" >등록번호</th>
               </tr>
               </thead>
               <tbody id="tbody">
-              <tr th:each="info : ${medicationInfo}">
+              <tr th:each="info : ${healthFoodInfo}">
                 <td class="text-center" th:text="${info.id}"></td>
                 <td class="text-start">
-                  <a class="text-dark" th:href="@{'/info/medication/' + ${info.id}}" th:text="${info.itemName}"></a>
+                  <a class="text-dark" th:href="@{'/info/healthFood/' + ${info.id}}" th:text="${info.itemName}"></a>
                 </td>
                 <td class="text-center" th:text="${info.enterpriseName}"></td>
-                <td class="text-center" th:text="${info.permitDate}"></td>
-                <td class="text-center" th:text="${info.cancelDate}"></td>
-                <td class="text-center" th:text="${info.cancelName}"></td>
-                <td class="text-center" th:text="${info.changeDate}"></td>
+                <td class="text-center" th:text="${info.registeredDate}"></td>
+                <td class="text-center" th:text="${info.itemSeq}"></td>
               </tr>
               </tbody>
             </table>
@@ -134,22 +130,22 @@
                 endPage=(${(totalPages == 0) ? 1 : (startPage + (maxPage - 1) < totalPages ? startPage + (maxPage - 1) : totalPages)})"
             >
               <li class="page-item">
-                <a class="page-link" th:href="@{/info/medication(searchValue=${searchValue}, searchFilter=${searchFilter}, page=0)}">첫 페이지</a>
+                <a class="page-link" th:href="@{/info/healthFood(searchValue=${searchValue}, searchFilter=${searchFilter}, page=0)}">첫 페이지</a>
               </li>
               <li class="page-item">
-                <a class="page-link" th:href="@{/info/medication(searchValue=${searchValue}, searchFilter=${searchFilter}, page=${pageNumber - 1})}">&laquo;</a>
+                <a class="page-link" th:href="@{/info/healthFood(searchValue=${searchValue}, searchFilter=${searchFilter}, page=${pageNumber - 1})}">&laquo;</a>
               </li>
 
               <li th:each="page: ${#numbers.sequence(startPage, endPage)}" class="page-item" th:classappend="${page == pageNumber + 1} ? 'active'">
-                <a class="page-link" th:text="${page}" th:href="@{/info/medication(searchValue=${searchValue}, searchFilter=${searchFilter}, page=${page - 1})}"></a>
+                <a class="page-link" th:text="${page}" th:href="@{/info/healthFood(searchValue=${searchValue}, searchFilter=${searchFilter}, page=${page - 1})}"></a>
               </li>
 
               <li class="page-item">
-                <a class="page-link" th:href="@{/info/medication(searchValue=${searchValue}, searchFilter=${searchFilter}, page=${pageNumber + 1})}">&raquo;</a>
+                <a class="page-link" th:href="@{/info/healthFood(searchValue=${searchValue}, searchFilter=${searchFilter}, page=${pageNumber + 1})}">&raquo;</a>
               </li>
 
             <li class="page-item">
-              <a class="page-link" th:href="@{/info/medication(searchValue=${searchValue}, searchFilter=${searchFilter}, page=${totalPages-1})}">끝 페이지</a>
+              <a class="page-link" th:href="@{/info/healthFood(searchValue=${searchValue}, searchFilter=${searchFilter}, page=${totalPages-1})}">끝 페이지</a>
             </li>
             </ul>
           </nav>

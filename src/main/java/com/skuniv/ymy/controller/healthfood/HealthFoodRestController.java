@@ -29,14 +29,14 @@ public class HealthFoodRestController {
 
         for (int i = 1; i <= 351; i++){
             try {
-                StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1471000/HtfsInfoService2/getHtfsItem"); /*URL*/
-                urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=v3Z3f%2FSzidiBv4M4fvV3G1CdLwvpePyKorJv5GDRz4kFglFZEg00xQZrPZicEEusfOLI%2FLzszRM0LTU8vCfSeQ%3D%3D"); /*Service Key*/
-                urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(i), "UTF-8")); /*페이지번호*/
-                urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("100", "UTF-8")); /*한 페이지 결과 수*/
-                urlBuilder.append("&" + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*응답데이터 형식(xml/json) Default: xml*/
+                /*URL*/
+                String urlBuilder = "http://apis.data.go.kr/1471000/HtfsInfoService2/getHtfsItem" + "?" + URLEncoder.encode("serviceKey", "UTF-8") + "=v3Z3f%2FSzidiBv4M4fvV3G1CdLwvpePyKorJv5GDRz4kFglFZEg00xQZrPZicEEusfOLI%2FLzszRM0LTU8vCfSeQ%3D%3D" + /*Service Key*/
+                        "&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(i), "UTF-8") + /*페이지번호*/
+                        "&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("100", "UTF-8") + /*한 페이지 결과 수*/
+                        "&" + URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"); /*응답데이터 형식(xml/json) Default: xml*/
 
                 // API 연결
-                URL url = new URL(urlBuilder.toString());
+                URL url = new URL(urlBuilder);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setRequestProperty("Content-type", "application/json");
@@ -56,8 +56,8 @@ public class HealthFoodRestController {
                 JSONArray items = (JSONArray) body.get("items");
 
                 // JSON parsing
-                for (int j = 0; j < items.size(); j++) {
-                    JSONObject object = (JSONObject) items.get(j);
+                for (Object item : items) {
+                    JSONObject object = (JSONObject) item;
 
                     String enterpriseName = String.valueOf(object.get("ENTRPS"));
                     String itemName = String.valueOf(object.get("PRDUCT"));

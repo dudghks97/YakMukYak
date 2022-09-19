@@ -50,8 +50,8 @@
 
                         <!-- Card Body -->
                         <div class="card-body text-dark">
-                            <div><a class="card-text text-dark" href="/info/medication"><b>의약품 정보조회</b></a></div>
-                            <div><a class="card-text text-dark" href="/info/healthFood">건강기능식품 정보조회</a></div>
+                            <div><a class="card-text text-dark" href="/info/medication">의약품 정보조회</a></div>
+                            <div><a class="card-text text-dark" href="/info/healthFood"><b>건강기능식품 정보조회</b></a></div>
                         </div>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
             <div class="card border border-dark h-100">
                 <!-- Card Header -->
                 <div class="card-header bg-dark text-white">
-                    <h5 class="m-0"><b>의약품 상세 조회</b></h5>
+                    <h5 class="m-0"><b>건강기능식품 상세 조회</b></h5>
                 </div>
 
                 <!-- Card Body -->
@@ -74,54 +74,46 @@
                         <table class="table table-borderless table-sm">
                             <tr>
                                 <td class="text-start"><strong>제품명</strong></td>
-                                <td class="text-start" th:text="${medicationInfo.itemName}"></td>
+                                <td class="text-start" th:text="${healthFoodInfo.itemName}"></td>
                             </tr>
                             <tr>
                                 <td class="text-start"><strong>업체명</strong></td>
-                                <td class="text-start" th:text="${medicationInfo.enterpriseName}"></td>
+                                <td class="text-start" th:text="${healthFoodInfo.enterpriseName}"></td>
                             </tr>
                             <tr>
-                                <td class="text-start"><strong>허가일</strong></td>
-                                <td class="text-start" th:text="${medicationInfo.permitDate}"></td>
+                                <td class="text-start"><strong>성상</strong></td>
+                                <td class="text-start" th:text="${healthFoodInfo.chart}"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-start"><strong>등록일</strong></td>
+                                <td class="text-start" th:text="${healthFoodInfo.registeredDate}"></td>
                             </tr>
                             <tr>
                                 <td class="text-start"><strong>품목기준코드</strong></td>
-                                <td class="text-start" th:text="${medicationInfo.itemSeq}"></td>
+                                <td class="text-start" th:text="${healthFoodInfo.itemSeq}"></td>
                             </tr>
                             <tr>
-                                <td class="text-start"><strong>취소/취하구분</strong></td>
-                                <td class="text-start" th:text="${medicationInfo.cancelName}"></td>
-                            </tr>
-                            <tr>
-                                <td class="text-start"><strong>취소/취하일자</strong></td>
-                                <td class="text-start" th:text="${medicationInfo.cancelDate}"></td>
+                                <td class="text-start"><strong>보존 및 유통기한</strong></td>
+                                <td class="text-start" th:text="${healthFoodInfo.validDate}"></td>
                             </tr>
                         </table>
                     </div>
                     <hr>
 
-                    <h4 class="card-title">원료약품 및 분량</h4>
-                    <strong><p th:text="'유효성분 : ' + ${medicationInfo.mainIngredient}"></p></strong>
-                    <p th:text="'원료성분 : ' + ${medicationInfo.materialName}"></p>
-                    <p th:text="${medicationInfo.ingredientName}"></p>
-                    <p th:text="'용량 : ' + ${medicationInfo.totalContent}"></p>
-                    <hr>
-
                     <h4 class="card-title">효능효과</h4>
-                    <p th:text="${medicationInfo.efficacy}"></p>
+                    <p th:text="${healthFoodInfo.mainFunction}"></p>
                     <hr>
 
                     <h4 class="card-title">용법용량</h4>
-                    <p th:text="${medicationInfo.useMethod}"></p>
-                    <hr>
-
-                    <h4 class="card-title">보관방법</h4>
-                    <p th:text="${medicationInfo.storageMethod}"></p>
+                    <p th:text="${healthFoodInfo.useMethod}"></p>
                     <hr>
 
                     <h4 class="card-title">사용상의 주의사항</h4>
-                    <p th:if="${medicationInfo.generalPrecaution.equals('null')}" th:text="${medicationInfo.professionalPrecaution}"></p>
-                    <p th:unless="${medicationInfo.generalPrecaution.equals('null')}" th:text="${medicationInfo.generalPrecaution}"></p>
+                    <p th:text="${healthFoodInfo.precaution}"></p>
+                    <hr>
+
+                    <h4 class="card-title">기준규격</h4>
+                    <p th:text="${healthFoodInfo.baseStandard}"></p>
                     <hr>
                 </div>
             </div>

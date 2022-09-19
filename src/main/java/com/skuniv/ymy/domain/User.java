@@ -18,6 +18,7 @@ public class User extends BaseTimeEntity {
 
     @Column(nullable = false, unique = true)
     private String name;
+    @Column(nullable = false, unique = true)
     private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
@@ -33,9 +34,5 @@ public class User extends BaseTimeEntity {
         this.email = email;
         this.doseNotificationsList = doseNotificationsList;
         this.doseDetailsList = doseDetailsList;
-    }
-
-    public void update(String name) {
-        this.name = name;
     }
 }
